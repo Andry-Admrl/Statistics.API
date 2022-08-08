@@ -35,7 +35,7 @@ namespace Statistics.API.Services
 
                      using (var context = _contextFactory.CreateDbContext())
                     {
-                         using (var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.Snapshot))
+                         using (var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead))
                         {
                             var countCallPerInterval = _callService.GetCountAndResetCalls();
                             var endDateTime = DateTime.UtcNow;
