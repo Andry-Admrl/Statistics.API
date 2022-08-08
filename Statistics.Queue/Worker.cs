@@ -54,18 +54,9 @@ namespace Statistics.Queue
 
                     var averageCallsInHour = await context.Calls
                         .Where(c => c.CreatedAt > from && c.CreatedAt <= to)
-                        .SumAsync(x => x.Count / 48);
+                        .SumAsync(x => x.Count)/48;
 
                     var countOfObservedDay = context.Calls.GroupBy(c => c.CreatedAt.Date).Count();
-
-                    //var mostLoadedHour = await context.Calls
-                    //    .GroupBy(c => new {
-                    //        c.Date.Month,
-                    //        c.Date.Day,
-                    //        c.Date.DayOfWeek,
-                    //        c.Date.Hour,
-                    //    })
-
                     var mostLoadedHour = await context.Calls
                            .GroupBy(c => c.CreatedAt.Hour)
                            .Select(g => new
