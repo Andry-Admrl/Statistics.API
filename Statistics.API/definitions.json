@@ -1,0 +1,54 @@
+{
+  "rabbit_version": "3.10.7",
+  "users": [
+    {
+      "name": "default",
+      "password": "12345678",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "default",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "queues": [
+    {
+      "name": "q.StatisticsOfCall",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": true,
+      "arguments": {}
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "e.StatisticsOfCall",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "e.StatisticsOfCall",
+      "vhost": "/",
+      "destination": "q.StatisticsOfCall",
+      "destination_type": "queue",
+      "routing_key": "q.StatisticsOfCall",
+      "arguments": {}
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Statistics.Infrastructure": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

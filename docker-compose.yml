@@ -1,0 +1,67 @@
+version: '3.4'
+
+services:
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 1433:1433
+    volumes:
+      - ~/apps/mssql/data:/var/lib/mssqlql/data
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=pass@Pass1
+    networks:
+      - backend-network
+
+  statistics.api:
+    image: ${DOCKER_REGISTRY-}statisticsapi
+    build:
+      context: .
+      dockerfile: Statistics.API/Dockerfile
+    depends_on: 
+      - db
+    networks:
+      - backend-network
+
+  statistics.queue:
+    image: ${DOCKER_REGISTRY-}statisticsqueue
+    build:
+      context: .
+      dockerfile: Statistics.Queue/Dockerfile
+    depends_on: 
+      - db
+    networks:
+      - backend-network
+      - rabbitmq_net
+
+  statistics.infrastructure:
+    image: ${DOCKER_REGISTRY-}statisticsinfrastructure
+    build:
+      context: .
+      dockerfile: Statistics.Infrastructure/Dockerfile
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    restart: always
+    environment:
+    - RABBITMQ_DEFAULT_USER=default
+    - RABBITMQ_DEFAULT_PASS=12345678
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+      - "./definitions.json:/etc/rabbitmq/definitions.json"
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq  
+    networks:
+        - rabbitmq_net
+
+  
+
+networks:
+  rabbitmq_net:
+    driver: bridge
+  backend-network:
+    driver: bridge
