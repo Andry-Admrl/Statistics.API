@@ -10,10 +10,7 @@ namespace Statistics.Queue.Services
         public void SendProductMessage<T>(T message)
         {
 
-            var factory = new ConnectionFactory()
-            {
-                Uri = new Uri("amqp://guest:guest@localhost:5672")
-            };
+            var factory = new ConnectionFactory() { HostName = "my-rabbit", Port = 5672 };
             factory.UserName = "default";
             factory.Password = "12345678";
 

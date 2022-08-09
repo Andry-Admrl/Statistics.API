@@ -28,7 +28,7 @@ namespace Statistics.API.Services
         private async Task DoWorkAsync(CancellationToken stoppingToken)
         {
 
-            using var _timer = new PeriodicTimer(TimeSpan.FromSeconds(10));
+            using var _timer = new PeriodicTimer(TimeSpan.FromSeconds(5));
             try
             {
                 while (await _timer.WaitForNextTickAsync(_cts.Token) && !stoppingToken.IsCancellationRequested)
@@ -48,11 +48,11 @@ namespace Statistics.API.Services
             }
             catch (OperationCanceledException ex)
             {
-                _logger.LogError(ex, "Queue writer service exception.");
+                _logger.LogError(ex, "Db writer service exception.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Queue writer service exception.");
+                _logger.LogError(ex, "Db writer service exception.");
             }
         }
 
